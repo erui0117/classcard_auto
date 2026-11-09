@@ -34,9 +34,20 @@ chrome_options.add_argument('--log-level=1')
 driver = webdriver.Chrome(options=chrome_options)
 
 # 로그인 시행
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 driver.get("https://www.classcard.net/Login")
-id_element = driver.find_element(By.ID, "login_id")
-pw_element = driver.find_element(By.ID, "login_pwd")
+
+wait = WebDriverWait(driver, 20)
+
+id_element = wait.until(
+    EC.presence_of_element_located((By.ID, "login_id"))
+)
+
+pw_element = wait.until(
+    EC.presence_of_element_located((By.ID, "login_pwd"))
+)
 id_element.clear() # Autofill 억제
 id_element.send_keys(account["id"])
 pw_element.send_keys(account["pw"])
